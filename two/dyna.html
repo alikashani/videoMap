@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+      body { margin:0; padding:0; }
+      /*#map { position:absolute; top:0; bottom:0; width:100%; }*/
+    </style>
+  </head>
+  <body>
+    <!-- <div id='map'></div> -->
+
+    <input type="file" id="file-input" />
+    <h3>Contents of the file:</h3>
+    <pre id="file-content"></pre>
+
+    <script>
+
+    function readSingleFile(e) {
+      var file = e.target.files[0];
+
+      if (!file) { return; }
+      var reader = new FileReader();
+      reader.onload = (e) => {
+        var contents = e.target.result;
+        displayContents(contents);
+      };
+      reader.readAsText(file);
+
+    }
+
+    function displayContents(contents) {
+      var element = document.getElementById('file-content');
+      element.innerHTML = contents;
+      // Ali added:
+      dataAsObject = JSON.parse(contents);
+      coordOne = dataAsObject.coordinates[0];
+      console.log(Number(coordOne[0]))
+    }
+
+    document.getElementById('file-input')
+      .addEventListener('change', readSingleFile, false);
+
+    </script>
+
+  </body>
+</html>

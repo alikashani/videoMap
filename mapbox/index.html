@@ -1,0 +1,41 @@
+<html>
+  <head>
+    <script src="https://code.jquery.com/jquery-3.1.0.slim.min.js"
+            integrity="sha256-cRpWjoSOw5KcyIOaZNo4i6fZ9tKPhYYb6i5T9RSVJG8="
+            crossorigin="anonymous"></script>
+    <script src='https://api.mapbox.com/mapbox.js/v2.2.4/mapbox.js'></script>
+    <link href='https://api.mapbox.com/mapbox.js/v2.2.4/mapbox.css' rel='stylesheet' />
+    <style>
+      body { margin:0; padding:0; }
+      #upload-station {
+        background:#ebebeb;
+        position:relative;
+        z-index:1;
+        border-radius:3px;
+        width:650px;
+        margin:auto;
+        padding: 20px;
+        top: 800px;
+        border:1px solid rgba(0,0,0,0.4);
+        font-family: Arial;
+      }
+      #map { position:absolute; top:0; bottom:0; width:100%; }
+      #file-input {
+        width:300px;
+      }
+      #file-content {
+        height: 250px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="upload-station">
+      <input type="file" id="file-input" />
+      <h3>Contents of the file:</h3>
+      <pre id="file-content"></pre>
+    </div>
+    <div id='map'></div>
+    <script type='text/javascript' src='ridepath.js'></script>
+    <div style="height:2000px"></div>
+  </body>
+</html>

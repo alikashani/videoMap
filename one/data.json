@@ -1,0 +1,26 @@
+{
+  "data" : {
+    "id" : 1,
+    "name" : "name_of_video.mpg",
+    "1" : {
+      "EpochTime"  : 81238123810,
+      "GPSData"    : "18238123823188281",
+      "ShockValue" : "14.58"
+    },
+    "2" : {
+      "EpochTime"  : 84843933993,
+      "GPSData"    : "82342398423482820",
+      "ShockValue" : "11.00"
+    },
+    "3" : {
+      "EpochTime"  : 81283128381,
+      "GPSData"    : "89328913894893498",
+      "ShockValue" : "17.21"
+    },
+    "4" : {
+      "EpochTime"  : 83458234828,
+      "GPSData"    : "88234883420234823",
+      "ShockValue" : "18.01"
+    },
+  }
+}
