@@ -1,3 +1,16 @@
+.kashani {
+  background-color: #ebebeb;
+  width: 400px;
+  height: 220px;
+  position: absolute;
+  right:10px;
+  bottom:20px;
+}
+
+.vanish {
+  display: none;
+}
+
 .fillD {
     background:#ebebeb;
 }
@@ -339,13 +352,14 @@ textarea.full-width {
 
 .file-bar .name {
     padding:0 10px;
-    display:inline-block;
+    display:none;
     vertical-align:top;
     background:#fff;
 }
 
 .file-bar .name .filename {
     margin-left:10px;
+    display:none;
 }
 
 .clickable:hover,

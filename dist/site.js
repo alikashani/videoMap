@@ -4860,7 +4860,7 @@ Traverse.prototype.reduce = function (cb, init) {
 Traverse.prototype.paths = function () {
     var acc = [];
     this.forEach(function (x) {
-        acc.push(this.path); 
+        acc.push(this.path);
     });
     return acc;
 };
@@ -4875,24 +4875,24 @@ Traverse.prototype.nodes = function () {
 
 Traverse.prototype.clone = function () {
     var parents = [], nodes = [];
-    
+
     return (function clone (src) {
         for (var i = 0; i < parents.length; i++) {
             if (parents[i] === src) {
                 return nodes[i];
             }
         }
-        
+
         if (typeof src === 'object' && src !== null) {
             var dst = copy(src);
-            
+
             parents.push(src);
             nodes.push(dst);
-            
+
             forEach(objectKeys(src), function (key) {
                 dst[key] = clone(src[key]);
             });
-            
+
             parents.pop();
             nodes.pop();
             return dst;
@@ -4907,13 +4907,13 @@ function walk (root, cb, immutable) {
     var path = [];
     var parents = [];
     var alive = true;
-    
+
     return (function walker (node_) {
         var node = immutable ? copy(node_) : node_;
         var modifiers = {};
-        
+
         var keepGoing = true;
-        
+
         var state = {
             node : node,
             node_ : node_,
@@ -4952,17 +4952,17 @@ function walk (root, cb, immutable) {
             stop : function () { alive = false },
             block : function () { keepGoing = false }
         };
-        
+
         if (!alive) return state;
-        
+
         function updateState() {
             if (typeof state.node === 'object' && state.node !== null) {
                 if (!state.keys || state.node_ !== state.node) {
                     state.keys = objectKeys(state.node)
                 }
-                
+
                 state.isLeaf = state.keys.length == 0;
-                
+
                 for (var i = 0; i < parents.length; i++) {
                     if (parents[i].node_ === node_) {
                         state.circular = parents[i];
@@ -4974,49 +4974,49 @@ function walk (root, cb, immutable) {
                 state.isLeaf = true;
                 state.keys = null;
             }
-            
+
             state.notLeaf = !state.isLeaf;
             state.notRoot = !state.isRoot;
         }
-        
+
         updateState();
-        
+
         // use return values to update if defined
         var ret = cb.call(state, state.node);
         if (ret !== undefined && state.update) state.update(ret);
-        
+
         if (modifiers.before) modifiers.before.call(state, state.node);
-        
+
         if (!keepGoing) return state;
-        
+
         if (typeof state.node == 'object'
         && state.node !== null && !state.circular) {
             parents.push(state);
-            
+
             updateState();
-            
+
             forEach(state.keys, function (key, i) {
                 path.push(key);
-                
+
                 if (modifiers.pre) modifiers.pre.call(state, state.node[key], key);
-                
+
                 var child = walker(state.node[key]);
                 if (immutable && hasOwnProperty.call(state.node, key)) {
                     state.node[key] = child.node;
                 }
-                
+
                 child.isLast = i == state.keys.length - 1;
                 child.isFirst = i == 0;
-                
+
                 if (modifiers.post) modifiers.post.call(state, child);
-                
+
                 path.pop();
             });
             parents.pop();
         }
-        
+
         if (modifiers.after) modifiers.after.call(state, state.node);
-        
+
         return state;
     })(root).node;
 }
@@ -5024,7 +5024,7 @@ function walk (root, cb, immutable) {
 function copy (src) {
     if (typeof src === 'object' && src !== null) {
         var dst;
-        
+
         if (isArray(src)) {
             dst = [];
         }
@@ -5062,7 +5062,7 @@ function copy (src) {
             T.prototype = proto;
             dst = new T;
         }
-        
+
         forEach(objectKeys(src), function (key) {
             dst[key] = src[key];
         });
@@ -5655,7 +5655,7 @@ case 1: // replace escaped characters with actual character
                      .replace(/\\v/g,'\v')
                      .replace(/\\f/g,'\f')
                      .replace(/\\b/g,'\b');
-        
+
 break;
 case 2:this.$ = Number(yytext);
 break;
@@ -6329,7 +6329,7 @@ function page(postfix, callback) {
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// UMD HEADER START 
+// UMD HEADER START
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
@@ -6412,7 +6412,7 @@ function request(options, callback) {
     else if(typeof options.body !== 'string')
       options.body = JSON.stringify(options.body)
   }
-  
+
   //BEGIN QS Hack
   var serialize = function(obj) {
     var str = [];
@@ -6422,7 +6422,7 @@ function request(options, callback) {
       }
     return str.join("&");
   }
-  
+
   if(options.qs){
     var qs = (typeof options.qs == 'string')? options.qs : serialize(options.qs);
     if(options.uri.indexOf('?') !== -1){ //no get params
@@ -6432,7 +6432,7 @@ function request(options, callback) {
     }
   }
   //END QS Hack
-  
+
   //BEGIN FORM Hack
   var multipart = function(obj) {
     //todo: support file type (useful?)
@@ -6455,7 +6455,7 @@ function request(options, callback) {
     result.type = 'multipart/form-data; boundary='+result.boundry;
     return result;
   }
-  
+
   if(options.form){
     if(typeof options.form == 'string') throw('form name unsupported');
     if(options.method === 'POST'){
@@ -9183,8 +9183,8 @@ osmtogeojson = function( data, options ) {
                 return [+n.lat,+n.lon];
               });
             }
-            // stolen from iD/geo.js, 
-            // based on https://github.com/substack/point-in-polygon, 
+            // stolen from iD/geo.js,
+            // based on https://github.com/substack/point-in-polygon,
             // ray-casting algorithm based on http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
             var pointInPolygon = function(point, polygon) {
               var x = point[0], y = point[1], inside = false;
@@ -9225,7 +9225,7 @@ osmtogeojson = function( data, options ) {
           }
           // sanitize mp-coordinates (remove empty clusters or rings, {lat,lon,...} to [lon,lat]
           var mp_coords = [];
-          mp_coords = _.compact(mp.map(function(cluster) { 
+          mp_coords = _.compact(mp.map(function(cluster) {
             var cl = _.compact(cluster.map(function(ring) {
               if (ring.length < 4) // todo: is this correct: ring.length < 4 ?
                 return;
@@ -9363,7 +9363,7 @@ osmtogeojson = function( data, options ) {
       if ( pfk.excluded_values && pfk.excluded_values[val] !== true )
         return true;
     }
-    // if no tags matched, this ain't no area. 
+    // if no tags matched, this ain't no area.
     return false;
   }
 };
@@ -21354,7 +21354,7 @@ var write = require('./write'),
     JSZip = require('jszip');
 
 module.exports = function(gj, options) {
-    
+
     var zip = new JSZip(),
         layers = zip.folder(options && options.folder ? options.folder : 'layers');
 
@@ -21541,11 +21541,11 @@ module.exports = function(gj, options) {
 		store.disabled = true
 	}
 	store.enabled = !store.disabled
-	
+
 	if (typeof module != 'undefined' && module.exports) { module.exports = store }
 	else if (typeof define === 'function' && define.amd) { define(store) }
 	else { win.store = store }
-	
+
 })(this.window || global);
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
@@ -26109,62 +26109,62 @@ var validate = require('../lib/validate'),
 
 module.exports = function(context) {
 
-    CodeMirror.keyMap.tabSpace = {
-        Tab: function(cm) {
-            var spaces = new Array(cm.getOption('indentUnit') + 1).join(' ');
-            cm.replaceSelection(spaces, 'end', '+input');
-        },
-        'Ctrl-S': saveAction,
-        'Cmd-S': saveAction,
-        fallthrough: ['default']
-    };
-
-    function saveAction() {
-        saver(context);
-        return false;
-    }
-
-    function render(selection) {
-        var textarea = selection
-            .html('')
-            .append('textarea');
-
-        var editor = CodeMirror.fromTextArea(textarea.node(), {
-            mode: 'application/json',
-            matchBrackets: true,
-            tabSize: 2,
-            gutters: ['error'],
-            theme: 'eclipse',
-            autofocus: (window === window.top),
-            keyMap: 'tabSpace',
-            lineNumbers: true
-        });
-
-        editor.on('change', validate(changeValidated));
-
-        function changeValidated(err, data, zoom) {
-            if (!err) {
-              context.data.set({map: data}, 'json');
-              if (zoom) zoomextent(context);
-            }
-        }
-
-        context.dispatch.on('change.json', function(event) {
-            if (event.source !== 'json') {
-                var scrollInfo = editor.getScrollInfo();
-                editor.setValue(JSON.stringify(context.data.get('map'), null, 2));
-                editor.scrollTo(scrollInfo.left, scrollInfo.top);
-            }
-        });
-
-        editor.setValue(JSON.stringify(context.data.get('map'), null, 2));
-    }
-
-    render.off = function() {
-        context.dispatch.on('change.json', null);
-    };
-
-    return render;
+    // CodeMirror.keyMap.tabSpace = {
+    //     Tab: function(cm) {
+    //         var spaces = new Array(cm.getOption('indentUnit') + 1).join(' ');
+    //         cm.replaceSelection(spaces, 'end', '+input');
+    //     },
+    //     'Ctrl-S': saveAction,
+    //     'Cmd-S': saveAction,
+    //     fallthrough: ['default']
+    // };
+    //
+    // // function saveAction() {
+    // //     saver(context);
+    // //     return false;
+    // // }
+    //
+    // // function render(selection) {
+    // //     var textarea = selection
+    // //         .html('')
+    // //         .append('textarea');
+    // //
+    // //     var editor = CodeMirror.fromTextArea(textarea.node(), {
+    // //         mode: 'application/json',
+    // //         matchBrackets: true,
+    // //         tabSize: 2,
+    // //         gutters: ['error'],
+    // //         theme: 'eclipse',
+    // //         autofocus: (window === window.top),
+    // //         keyMap: 'tabSpace',
+    // //         lineNumbers: true
+    // //     });
+    // //
+    // //     editor.on('change', validate(changeValidated));
+    // //
+    // //     function changeValidated(err, data, zoom) {
+    // //         if (!err) {
+    // //           context.data.set({map: data}, 'json');
+    // //           if (zoom) zoomextent(context);
+    // //         }
+    // //     }
+    // //
+    // //     context.dispatch.on('change.json', function(event) {
+    // //         if (event.source !== 'json') {
+    // //             var scrollInfo = editor.getScrollInfo();
+    // //             editor.setValue(JSON.stringify(context.data.get('map'), null, 2));
+    // //             editor.scrollTo(scrollInfo.left, scrollInfo.top);
+    // //         }
+    // //     });
+    // //
+    // //     editor.setValue(JSON.stringify(context.data.get('map'), null, 2));
+    // // }
+    // //
+    // // render.off = function() {
+    // //     context.dispatch.on('change.json', null);
+    // // };
+    //
+    // // return render;
 };
 
 },{"../lib/validate":163,"../lib/zoomextent":164,"../ui/saver.js":181}],167:[function(require,module,exports){
@@ -26520,7 +26520,7 @@ function shaUrl(parts, sha) {
 
 },{"../config.js":149}],171:[function(require,module,exports){
 try {
-    
+
 } catch(e) {
     console.warn(e);
 }
@@ -26574,44 +26574,49 @@ function ui(context) {
 
         var container = init(selection);
 
-        var right = container
-            .append('div')
-            .attr('class', 'right');
+        d3.select('body').classed('fullscreen', !d3.select('body').classed('fullscreen'));
+        var full = d3.select('body').classed('fullscreen');
 
-        var top = right
-            .append('div')
-            .attr('class', 'top');
+        context.map.invalidateSize();
 
-        top
-            .append('button')
-            .attr('class', 'collapse-button')
-            .attr('title', 'Collapse')
-            .on('click', function collapse() {
-                d3.select('body').classed('fullscreen',
-                    !d3.select('body').classed('fullscreen'));
-                var full = d3.select('body').classed('fullscreen');
-                d3.select(this)
-                    .select('.icon')
-                    .classed('icon-caret-up', !full)
-                    .classed('icon-caret-down', full);
-                context.map.invalidateSize();
-            })
-            .append('class', 'span')
-            .attr('class', 'icon icon-caret-up');
+        // var right = container
+        //     .append('div')
+        //     .attr('class', 'right')
+            // .attr('class', 'vanish');
 
-        var pane = right
-            .append('div')
-            .attr('class', 'pane');
+        // var top = right
+        //     .append('div')
+        //     .attr('class', 'top');
+        // top
+        //     .append('button')
+        //     .attr('class', 'collapse-button')
+        //     // .attr('title', 'Collapse')
+        //     .on('click', function collapse() {
+        //         d3.select('body').classed('fullscreen',
+        //             !d3.select('body').classed('fullscreen'));
+        //         var full = d3.select('body').classed('fullscreen');
+        //         d3.select(this)
+        //             .select('.icon')
+        //             .classed('icon-caret-up', !full)
+        //             .classed('icon-caret-down', full);
+        //         context.map.invalidateSize();
+        //     })
+        //     .append('class', 'span')
+        //     .attr('class', 'icon icon-caret-up');
 
-        top
-            .append('div')
-            .attr('class', 'user fr pad1 deemphasize')
-            .call(userUi(context));
+        // var pane = right
+        //     .append('div')
+        //     .attr('class', 'pane');
 
-        top
-            .append('div')
-            .attr('class', 'buttons')
-            .call(buttons(context, pane));
+        // top
+        //     .append('div')
+        //     .attr('class', 'user fr pad1 deemphasize')
+        //     .call(userUi(context));
+
+        // top
+        //     .append('div')
+        //     .attr('class', 'buttons')
+        //     .call(buttons(context, pane));
 
         container
             .append('div')
@@ -26731,71 +26736,75 @@ module.exports = function fileBar(context) {
 
     function bar(selection) {
 
-        var actions = [{
+        var actions = [
+          {
             title: 'Save',
             action: (mapboxAPI || githubAPI) ? saveAction : function() {},
             children: exportFormats
-        }, {
+          },
+         {
             title: 'New',
             action: function() {
                 window.open(window.location.origin +
                     window.location.pathname + '#new');
             }
-        }, {
-            title: 'Meta',
-            action: function() {},
-            children: [
-                {
-                    title: 'Add map layer',
-                    alt: 'Add a custom tile layer',
-                    action: function() {
-                        var layerURL = prompt('Layer URL \n(http://tile.stamen.com/watercolor/{z}/{x}/{y}.jpg)');
-                        if (layerURL === null) return;
-                        var layerName = prompt('Layer name');
-                        if (layerName === null) return;
-                        meta.adduserlayer(context, layerURL, layerName);
-                    }
-                },
-                {
-                    title: 'Zoom to features',
-                    alt: 'Zoom to the extent of all features',
-                    action: function() {
-                        meta.zoomextent(context);
-                    }
-                },
-                {
-                    title: 'Clear',
-                    alt: 'Delete all features from the map',
-                    action: function() {
-                        if (confirm('Are you sure you want to delete all features from this map?')) {
-                            meta.clear(context);
-                        }
-                    }
-                }, {
-                    title: 'Random: Points',
-                    alt: 'Add random points to your map',
-                    action: function() {
-                        var response = prompt('Number of points (default: 100)');
-                        if (response === null) return;
-                        var count = parseInt(response, 10);
-                        if (isNaN(count)) count = 100;
-                        meta.random(context, count, 'point');
-                    }
-                }, {
-                    title: 'Add bboxes',
-                    alt: 'Add bounding box members to all applicable GeoJSON objects',
-                    action: function() {
-                        meta.bboxify(context);
-                    }
-                }, {
-                    title: 'Flatten Multi Features',
-                    alt: 'Flatten MultiPolygons, MultiLines, and GeometryCollections into simple geometries',
-                    action: function() {
-                        meta.flatten(context);
-                    }
-                }
-            ]
-        }];
+        },
+        // {
+        //     title: 'Meta',
+        //     action: function() {},
+        //     children: [
+        //         {
+        //             title: 'Add map layer',
+        //             alt: 'Add a custom tile layer',
+        //             action: function() {
+        //                 var layerURL = prompt('Layer URL \n(http://tile.stamen.com/watercolor/{z}/{x}/{y}.jpg)');
+        //                 if (layerURL === null) return;
+        //                 var layerName = prompt('Layer name');
+        //                 if (layerName === null) return;
+        //                 meta.adduserlayer(context, layerURL, layerName);
+        //             }
+        //         },
+        //         {
+        //             title: 'Zoom to features',
+        //             alt: 'Zoom to the extent of all features',
+        //             action: function() {
+        //                 meta.zoomextent(context);
+        //             }
+        //         },
+        //         {
+        //             title: 'Clear',
+        //             alt: 'Delete all features from the map',
+        //             action: function() {
+        //                 if (confirm('Are you sure you want to delete all features from this map?')) {
+        //                     meta.clear(context);
+        //                 }
+        //             }
+        //         }, {
+        //             title: 'Random: Points',
+        //             alt: 'Add random points to your map',
+        //             action: function() {
+        //                 var response = prompt('Number of points (default: 100)');
+        //                 if (response === null) return;
+        //                 var count = parseInt(response, 10);
+        //                 if (isNaN(count)) count = 100;
+        //                 meta.random(context, count, 'point');
+        //             }
+        //         }, {
+        //             title: 'Add bboxes',
+        //             alt: 'Add bounding box members to all applicable GeoJSON objects',
+        //             action: function() {
+        //                 meta.bboxify(context);
+        //             }
+        //         }, {
+        //             title: 'Flatten Multi Features',
+        //             alt: 'Flatten MultiPolygons, MultiLines, and GeometryCollections into simple geometries',
+        //             action: function() {
+        //                 meta.flatten(context);
+        //             }
+        //         }
+        //     ]
+        // }
+        ];
 
         if (mapboxAPI || githubAPI) {
             actions.unshift({
@@ -26805,17 +26814,18 @@ module.exports = function fileBar(context) {
                         title: 'File',
                         alt: 'GeoJSON, TopoJSON, GTFS, KML, CSV, GPX and OSM XML supported',
                         action: blindImport
-                    }, {
-                        title: 'GitHub',
-                        alt: 'GeoJSON files in GitHub Repositories',
-                        authenticated: true,
-                        action: clickGitHubOpen
-                    }, {
-                        title: 'Gist',
-                        alt: 'GeoJSON files in GitHub Gists',
-                        authenticated: true,
-                        action: clickGist
-                    }
+                    },
+                    //  {
+                    //     title: 'GitHub',
+                    //     alt: 'GeoJSON files in GitHub Repositories',
+                    //     authenticated: true,
+                    //     action: clickGitHubOpen
+                    // }, {
+                    //     title: 'Gist',
+                    //     alt: 'GeoJSON files in GitHub Gists',
+                    //     authenticated: true,
+                    //     action: clickGist
+                    // }
                 ]
             });
             actions[1].children.unshift({
@@ -26884,7 +26894,7 @@ module.exports = function fileBar(context) {
 
             var filename = name.append('span')
                 .attr('class', 'filename')
-                .text('unsaved');
+                .text('');
         }
 
         function clickGistSave() {
@@ -27296,12 +27306,12 @@ module.exports = function(context, readonly) {
 
     function map(selection) {
         context.map = L.mapbox.map(selection.node(), null)
-            .setView([20, 0], 2)
-            .addControl(L.mapbox.geocoderControl('mapbox.places', {
-                position: 'topright'
-            }));
+            .setView([20, 0], 2);
+            // .addControl(L.mapbox.geocoderControl('mapbox.places', {
+            //     position: 'topright'
+            // }));
 
-        L.control.scale().setPosition('bottomright').addTo(context.map);
+        // L.control.scale().setPosition('bottomright').addTo(context.map);
         context.map.zoomControl.setPosition('topright');
 
         L.hash(context.map);
@@ -27835,36 +27845,36 @@ module.exports = function(context) {
         var name = selection.append('a')
             .attr('target', '_blank');
 
-        selection.append('span').text(' | ');
+        // selection.append('span').text(' | ');
+        //
+        // var action = selection.append('a')
+        //     .attr('href', '#');
 
-        var action = selection.append('a')
-            .attr('href', '#');
-
-        function nextLogin() {
-            action.text('login').on('click', login);
-            name
-                .text('anon')
-                .attr('href', '#')
-                .on('click', function() { d3.event.preventDefault(); });
-        }
-
-        function nextLogout() {
-            name.on('click', null);
-            action.text('logout').on('click', logout);
-        }
-
-        function login() {
-            d3.event.preventDefault();
-            context.user.authenticate();
-        }
-
-        function logout() {
-            d3.event.preventDefault();
-            context.user.logout();
-            nextLogin();
-        }
-
-        nextLogin();
+        // function nextLogin() {
+        //     action.text('login').on('click', login);
+        //     name
+        //         .text('anon')
+        //         .attr('href', '#')
+        //         .on('click', function() { d3.event.preventDefault(); });
+        // }
+        //
+        // function nextLogout() {
+        //     name.on('click', null);
+        //     action.text('logout').on('click', logout);
+        // }
+        //
+        // function login() {
+        //     d3.event.preventDefault();
+        //     context.user.authenticate();
+        // }
+        //
+        // function logout() {
+        //     d3.event.preventDefault();
+        //     context.user.logout();
+        //     nextLogin();
+        // }
+        //
+        // nextLogin();
 
         if (context.user.token()) {
             context.user.details(function(err, d) {
